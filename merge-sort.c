@@ -1,80 +1,60 @@
-#include<stdio.h>
-#include<stdlib.h>
-void read(int [], int);
-void merge(int[], int, int);
-void mergesort(int[], int , int, int);
-void display(int [], int);
-int main(void){
-    int i,n,a[40];
-    printf("Enter the size of array:");
-    scanf("%d",&n);
-    read(a,n);
-    printf("\nElements before sorting:");
-    display(a,n);
-    merge(a,0,n);
-    display(a,n);
-    
-    
+#include <stdio.h>
+ #include<stdlib.h>
+void readList(int [],int);
+void printList(int [],int);
+void mergeSort(int [],int,int);
+void merge(int [],int,int,int);
+int main(void) {
+  int a[20];
+  int n;
+  printf("enter n:\n");
+  scanf(" %d",&n);
+  printf("enter elements:\n");
+  readList(a,n);
+  printList(a,n);
+  mergeSort(a,0,n-1);
+  printf("elements after sorting are:\n");
+  printList(a,n);
+    return 0;
 }
-
-void read(int a[], int n){
-for(int i = 0; i < n; i++)
-    {
-       a[i]=rand()%100;
-    }
-   
+void readList(int a[],int n){
+    int i;
+    for(i=0;i<n;i++)
+     a[i]=rand()%100;
+} 
+void printList(int a[],int n){
+    int i;
+    for(i=0;i<n;i++)
+      printf(" a[%d]=%d\n",i,a[i]);
 }
-
-void display(int a[], int n){
-   
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ",a[i]);
-   }
-   printf("\n");
-  }
-
-void merge(int a[], int f, int l){
+void mergeSort(int a[],int low,int hi){
     int mid;
-    if (f<l)
-    {
-        mid=(f+l)/2;
-        merge(a,f,mid);
-        merge(a,mid+1,l);
-        mergesort(a,f,mid,l);
+    if(low<hi){
+        mid=(low+hi)/2;
+        mergeSort(a,low,mid);
+        mergeSort(a,mid+1,hi);
+        merge(a,low,mid,hi);
     }
-}
-
-void mergesort(int a[], int f, int mid,int l){
-    int i=f,j=mid+1,index=f,temp[50];
-    while (i<mid && j<=l ){
-        if(a[i]<a[j]){
-            temp[index]=a[i];
-            i++;
-        }
-        else{
-            temp[index]=a[j];
-            j++;
-        }
-        index++;
+} 
+void merge(int a[],int low,int mid,int hi){
+    int i=low;
+    int j=mid+1;
+    int b[20];
+    int k=low;
+    while(i<=mid && j<=hi){
+           if(a[i]<=a[j])
+             b[k++]=a[i++];
+            else if(a[i]>a[j]) 
+              b[k++]=a[j++];
     }
     if(i>mid){
-        while (j<=l){
-            temp[index]=a[j];
-            j++;
-            index;
-        }
+       while(j<=hi)
+         b[k++]=a[j++];
     }
     else{
-        while (i<=mid){
-            temp[index]=a[i];
-            i++;
-            index++;
-        }
+      while(i<=mid)
+        b[k++]=a[i++];
     }
-for (int k = 0; k < index; k++)
-{
-    a[k]=temp[k];
-}
-    
+   for(k=low;k<=hi;k++)
+     a[k]=b[k];
 }
